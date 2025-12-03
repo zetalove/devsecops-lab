@@ -1,20 +1,20 @@
 name: DevSecOps Pipeline
-
 on: [push, pull_request]
-
 jobs:
+ # ═══════════════════════════════════════
+ # 1. BUILD
+ # Construit l'image Docker de l'application
+ # Permet de valider que le code compile et de préparer l'image pour le scan de vulnérabilités
+ # ═══════════════════════════════════════
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build Docker image
+      - name: Build Docker image 
         run: docker build -t vuln-app:${{ github.sha }} .
-
       - name: Save image
         run: docker save vuln-app:${{ github.sha }} > image.tar
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
